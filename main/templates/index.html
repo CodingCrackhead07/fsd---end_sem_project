@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}LuxCars - Home{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Heading -->
+    <div class="text-center">
+        <h1>LuxCars</h1>
+        <p>Your trusted destination for buying and reselling premium luxury vehicles.</p>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar mt-4 text-center">
+        <form method="GET" action="{% url 'index' %}">
+            <input 
+                type="text" 
+                name="brand" 
+                class="form-control d-inline-block" 
+                placeholder="Search cars by brand" 
+                style="width: 300px;" 
+            />
+            <button 
+                type="submit" 
+                class="btn btn-dark" 
+                style="width: auto; padding: 0.5rem 1.5rem;"
+            >
+                Search
+            </button>
+        </form>
+    </div>
+    
+
+    <!-- Cars Section -->
+    <div class="cars-section mt-5">
+        <h2 class="text-center">Available Cars</h2>
+        <div class="row mt-4">
+            {% if cars %}
+                <!-- Loop through CarListing objects from the database -->
+                {% for car in cars %}
+                    <div class="col-md-4 col-sm-6 col-12">
+                        <div class="card">
+                            <!-- Dynamically load car image -->
+                            <img src="{% if car.car_image %}{{ car.car_image.url }}{% else %}/static/images/default-car.jpg{% endif %}" class="card-img-top" alt="{{ car.car_name }}">
+                            <div class="card-body">
+                                <!-- Dynamically load car name, price, and year -->
+                                <h5 class="card-title">{{ car.car_name }}</h5>
+                                <p class="card-text">${{ car.price }}</p>
+                                <p class="card-text"><strong>Year:</strong> {{ car.year }}</p>
+                                <!-- Link to view car details -->
+                                <a href="{% url 'car_details' car.id %}" class="btn btn-dark btn-lg">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">No cars available at the moment. Please check back later!</p>
+            {% endif %}
+        </div>
+    </div>    
+</div>
+
+<style>
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 100%; /* Ensures all cards are of equal height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card img {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        height: 200px; /* Fixed image height for uniformity */
+        object-fit: cover; /* Ensures image fits nicely without distortion */
+    }
+
+    .card-body {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        flex-grow: 1; /* Makes the card body stretch to fill the card */
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .btn {
+        width: 100%; /* Makes the button span the card width */
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .col-md-4 {
+        flex: 1 1 calc(33.333% - 20px); /* Ensures consistent column size */
+        max-width: calc(33.333% - 20px);
+    }
+
+    @media (max-width: 768px) {
+        .col-md-4 {
+            flex: 1 1 calc(50% - 20px); /* Adjusts for smaller screens */
+            max-width: calc(50% - 20px);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-md-4 {
+            flex: 1 1 100%; /* Single column for very small screens */
+            max-width: 100%;
+        }
+    }
+</style>
+{% endblock %}

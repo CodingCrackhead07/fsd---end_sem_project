@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+{% load custom_filters %}  
+{% block title %}{{ car.car_name }} Details{% endblock %}  
+
+
+{% block content %} 
+<section class="car-details container">
+    <style>
+        .car-details {
+            padding: 30px 0;
+            background-color: #f9f9f9;
+        }
+    
+        .car-info {
+            padding-left: 30px;
+        }
+    
+        .car-image img {
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            height: 200px; /* Fixed height for uniformity */
+            object-fit: cover;
+        }
+    
+        h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 20px;
+            text-align: center;
+        }
+    
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    
+        .car-specifications, .car-features {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    
+        .specifications-list, .features-list {
+            display: flex;
+            flex-direction: column;
+        }
+    
+        .spec-item, .feature-item {
+            font-size: 16px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+    
+        .spec-item i, .feature-item i {
+            font-size: 20px;
+            color: #007bff;
+        }
+    
+        .spec-item:hover, .feature-item:hover {
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        .feature-item i {
+            font-size: 24px;
+            color: #007bff;
+        }
+    
+        .feature-item i.fa-snowflake { color: #00aaff; }
+        .feature-item i.fa-fire { color: #ff4500; }
+        .feature-item i.fa-cogs { color: #ff9800; }
+        .feature-item i.fa-clock { color: #000000; }
+        .feature-item i.fa-map-marker-alt { color: #4CAF50; }
+        .feature-item i.fa-parking { color: #9c27b0; }
+    
+        .additional-images img {
+            width: 100%;
+            height: 150px; /* Fixed height for uniformity */
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+    
+        .car-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background-color: #fff;
+            height: 400px; /* Ensure uniform card height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    
+        .car-card h3 {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+    
+        .car-card img {
+            width: 100%;
+            height: 200px; /* Fixed height */
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    
+        .car-card .card-footer {
+            margin-top: auto;
+            text-align: center;
+        }
+    
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+    
+        .col-md-4 {
+            flex: 1 1 calc(33.333% - 20px); /* Adjust width and spacing */
+            max-width: calc(33.333% - 20px); /* Ensure consistent column sizing */
+        }
+    
+        @media (max-width: 768px) {
+            .col-md-4 {
+                flex: 1 1 calc(50% - 20px); /* Adjust for smaller screens */
+                max-width: calc(50% - 20px);
+            }
+    
+            .car-card {
+                height: auto; /* Adjust height for smaller screens */
+            }
+        }
+    
+        @media (max-width: 576px) {
+            .col-md-4 {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+
+<div class="row">
+    <div class="col-md-4 car-image">
+        <img src="{{ car.car_image.url }}" alt="{{ car.car_name }}" class="img-fluid" style="width: 100%; height: auto;">
+        <h3 class="text-center">{{ car.car_name }}</h3>
+    </div>
+    
+    <div class="col-md-4 additional-images">
+        <h3>Additional Images</h3>
+        {% for image in car.additional_images.all %}
+            <img src="{{ image.image.url }}" alt="Additional image of {{ car.car_name }}">
+        {% empty %}
+            <p>No additional images available</p>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-4 car-info">
+        <h2>Car Information</h2>
+        <p><strong>Price:</strong> ${{ car.price }}</p>
+        <p><strong>Model:</strong> {{ car.model }}</p>
+        <p><strong>Year:</strong> {{ car.year }}</p>
+        <p><strong>Color:</strong> {{ car.color }}</p>
+        <p><strong>Kilometers:</strong> {{ car.kilometers }} km</p>
+        <p><strong>Owner:</strong> {{ car.owner }}</p>
+        <p><strong>Fuel Type:</strong> {{ car.fuel_type }}</p>
+        <p><strong>Transmission:</strong> {{ car.transmission }}</p>
+        <p><strong>Engine:</strong> {{ car.engine }}</p>
+        <p><strong>Insurance Validity:</strong> {{ car.insurance_validity }}</p>
+        
+        {% if not in_wishlist %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning mt-3">
+                    Add to Wishlist
+                </button>
+            </form>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger mt-3">
+                    Remove from Wishlist
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left column for specifications -->
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="bi bi-gear-fill me-2"></i>Specifications</h3>
+                </div>
+                <div class="card-body">
+                    <div class="specifications-list">
+                        {% for spec in specifications %}
+                            <div class="spec-item">
+                                {% if spec.name == "central_locking" %}
+                                    <i class="bi bi-lock-fill text-primary"></i>
+                                {% elif spec.name == "driver_airbag" %}
+                                    <i class="bi bi-shield-fill-check text-primary"></i>
+                                {% elif spec.name == "abs" %}
+                                    <i class="bi bi-disc-fill text-primary"></i>
+                                {% elif spec.name == "power_door_locks" %}
+                                    <i class="bi bi-door-closed-fill text-primary"></i>
+                                {% elif spec.name == "adjustable_seats" %}
+                                    <i class="bi bi-person-workspace text-primary"></i>
+                                {% elif spec.name == "crash_sensor" %}
+                                    <i class="bi bi-exclamation-triangle-fill text-primary"></i>
+                                {% elif spec.name == "rear_camera" %}
+                                    <i class="bi bi-camera-fill text-primary"></i>
+                                {% endif %}
+                                {{ spec.name|title|replace_underscore }}
+                            </div>
+                        {% empty %}
+                            <p class="text-muted">No specifications available</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right column for features -->
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="bi bi-star-fill me-2"></i>Features</h3>
+                </div>
+                <div class="card-body">
+                    <div class="features-list">
+                        {% for feature in features %}
+                            <div class="feature-item">
+                                {% if feature.name == "air_conditioner" %}
+                                    <i class="bi bi-thermometer-snow text-info"></i>
+                                {% elif feature.name == "heater" %}
+                                    <i class="bi bi-thermometer-high text-danger"></i>
+                                {% elif feature.name == "adjustable_steering" %}
+                                    <i class="bi bi-circle text-warning"></i>
+                                {% elif feature.name == "digital_clock" %}
+                                    <i class="bi bi-clock-fill text-secondary"></i>
+                                {% elif feature.name == "navigation_system" %}
+                                    <i class="bi bi-geo-alt-fill text-success"></i>
+                                {% elif feature.name == "parking_sensors" %}
+                                    <i class="bi bi-p-square-fill text-purple"></i>
+                                {% endif %}
+                                {{ feature.name|title|replace_underscore }}
+                            </div>
+                        {% empty %}
+                            <p class="text-muted">No features available</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .specifications-list, .features-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .spec-item, .feature-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        background-color: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+
+    .spec-item:hover, .feature-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #e9ecef;
+    }
+
+    .spec-item i, .feature-item i {
+        font-size: 1.25rem;
+        margin-right: 1rem;
+        width: 24px;
+        text-align: center;
+    }
+
+    .card {
+        height: 100%;
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        padding: 1rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.25rem;
+        margin: 0;
+    }
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - LuxCars{% endblock %}
+
+{% block content %}
+<div class="form-container shadow-lg">
+    <h2>Create Your <span class="brand">LuxCars</span> Account</h2>
+
+    <!-- Display error messages if any -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <!-- Explicitly render each field with input areas -->
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" id="username" class="form-control" placeholder="Enter your username" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm your password" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+
+    <p class="login-link">
+        Already have an account? <a href="{% url 'login' %}">Login here</a>
+    </p>
+</div>
+
+<style>
+    /* Container */
+    .form-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #ffffff, #ececec);
+        box-shadow: 5px 5px 15px #cccccc, -5px -5px 15px #ffffff;
+    }
+
+    /* Heading */
+    .form-container h2 {
+        text-align: center;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 20px;
+    }
+
+    .form-container .brand {
+        color: #f0a500;
+        font-weight: bold;
+    }
+
+    /* Form Styling */
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-container form input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-container form button {
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        background: linear-gradient(145deg, #f0a500, #e69500);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-container form button:hover {
+        background: linear-gradient(145deg, #e69500, #f0a500);
+    }
+
+    /* Login Link */
+    .form-container .login-link {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+    }
+
+    .form-container .login-link a {
+        color: #f0a500;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+    .form-container .login-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Alert Styling */
+    .alert-container {
+        margin-bottom: 20px;
+    }
+
+    .alert {
+        padding: 10px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}

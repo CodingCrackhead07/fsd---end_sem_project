@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - LuxCars{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Login to LuxCars</h2>
+
+    <!-- Display error messages if any -->
+    {% if messages %}
+        <div class="alert-container">
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="text-center mt-3">
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+</div>
+
+<style>
+    .form-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 10px;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        box-shadow: 5px 5px 15px #ccc, -5px -5px 15px #ffffff;
+    }
+
+    .form-container h2 {
+        text-align: center;
+        color: #333;
+        font-family: 'Arial', sans-serif;
+        margin-bottom: 20px;
+    }
+
+    .form-container form input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .form-container form button {
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        background: linear-gradient(145deg, #007bff, #0056b3);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-container form button:hover {
+        background: linear-gradient(145deg, #0056b3, #007bff);
+    }
+
+    /* Alert Styling */
+    .alert-container {
+        margin-bottom: 20px;
+    }
+
+    .alert {
+        padding: 10px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}

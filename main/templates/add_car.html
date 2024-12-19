@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}List New Car | LuxCars{% endblock %}
+
+{% block content %}
+<h2>Add New Car</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="car_name" class="form-label">Car Name:</label>
+        <input type="text" class="form-control" name="car_name" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="car_image" class="form-label">Car Image:</label>
+        <input type="file" class="form-control" name="car_image" required>
+    </div>
+
+    <!-- Additional Images -->
+    <div class="mb-3">
+        <label for="additional_images" class="form-label">Additional Images:</label>
+        <input type="file" class="form-control" name="additional_images" multiple>
+    </div>
+
+    <div class="mb-3">
+        <label for="price" class="form-label">Price:</label>
+        <input type="number" class="form-control" name="price" step="0.01" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="model" class="form-label">Model:</label>
+        <input type="text" class="form-control" name="model" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="year" class="form-label">Year:</label>
+        <input type="number" class="form-control" name="year" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="color" class="form-label">Color:</label>
+        <input type="text" class="form-control" name="color" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="kilometers" class="form-label">Kilometers:</label>
+        <input type="number" class="form-control" name="kilometers" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="owner" class="form-label">Owner:</label>
+        <input type="text" class="form-control" name="owner" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="fuel_type" class="form-label">Fuel Type:</label>
+        <input type="text" class="form-control" name="fuel_type" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="transmission" class="form-label">Transmission:</label>
+        <input type="text" class="form-control" name="transmission" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="engine" class="form-label">Engine:</label>
+        <input type="text" class="form-control" name="engine" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="insurance_validity" class="form-label">Insurance Validity:</label>
+        <input type="date" class="form-control" name="insurance_validity" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="specifications" class="form-label">Specifications:</label>
+        <div>
+            <input type="checkbox" name="specifications" value="central_locking"> Central Locking<br>
+            <input type="checkbox" name="specifications" value="driver_airbag"> Driver Airbag<br>
+            <input type="checkbox" name="specifications" value="abs"> Anti-Lock Braking System<br>
+            <input type="checkbox" name="specifications" value="power_door_locks"> Power Door Locks<br>
+            <input type="checkbox" name="specifications" value="adjustable_seats"> Adjustable Seats<br>
+            <input type="checkbox" name="specifications" value="crash_sensor"> Crash Sensor<br>
+            <input type="checkbox" name="specifications" value="rear_camera"> Rear Camera<br>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="features" class="form-label">Features:</label>
+        <div>
+            <input type="checkbox" name="features" value="air_conditioner"> Air Conditioner<br>
+            <input type="checkbox" name="features" value="heater"> Heater<br>
+            <input type="checkbox" name="features" value="adjustable_steering"> Adjustable Steering<br>
+            <input type="checkbox" name="features" value="digital_clock"> Digital Clock<br>
+            <input type="checkbox" name="features" value="navigation_system"> Navigation System<br>
+            <input type="checkbox" name="features" value="parking_sensors"> Parking Sensors<br>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Car</button>
+</form>
+
+{% endblock %}

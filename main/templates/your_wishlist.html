@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block title %}Your Wishlist | LuxCars{% endblock %}
+
+{% block content %}
+<h2>Your Wishlist</h2>
+
+{% if wishlist_items %}
+    <div class="row">
+        {% for wishlist_item in wishlist_items %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ wishlist_item.car.car_image.url }}" class="card-img-top" alt="{{ wishlist_item.car.car_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ wishlist_item.car.car_name }}</h5>
+                        <p class="card-text">Price: ${{ wishlist_item.car.price }}</p>
+                        <a href="{% url 'car_details' wishlist_item.car.id %}" class="btn btn-primary">View Details</a>
+                        
+                        <!-- Delete icon to remove from wishlist -->
+                        <form method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to remove this car from your wishlist?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="car_id" value="{{ wishlist_item.car.id }}">
+                            <button type="submit" class="btn btn-danger btn-sm mt-2">
+                                <i class="fa fa-trash"></i> Remove from Wishlist
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Your wishlist is empty. Start adding cars to it!</p>
+{% endif %}
+<style>
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        height: 100%; /* Ensure cards take equal height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-img-top {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        height: 200px; /* Uniform image height */
+        object-fit: cover; /* Ensures images fit nicely without distortion */
+    }
+
+    .card-body {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1; /* Ensures the body takes up the remaining space */
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%; /* Buttons span the width of the card */
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .col-md-4 {
+        flex: 1 1 calc(33.333% - 20px); /* Ensure columns are consistent */
+        max-width: calc(33.333% - 20px);
+    }
+
+    @media (max-width: 768px) {
+        .col-md-4 {
+            flex: 1 1 calc(50% - 20px); /* Adjust columns for smaller screens */
+            max-width: calc(50% - 20px);
+        }
+    }
+
+    @media (max-width: 576px) {
+        .col-md-4 {
+            flex: 1 1 100%;
+            max-width: 100%;
+        }
+    }
+
+    .btn-danger {
+        margin-top: 10px; /* Ensure spacing between buttons */
+    }
+</style>
+
+{% endblock %}
